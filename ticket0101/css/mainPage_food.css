@@ -1,0 +1,30 @@
+/***************主頁食物排版***********************/
+
+.cloum_image_block img:hover {
+    transform: scale(1.10);
+}
+
+.esp_content{
+    display: flex;
+    gap: 20px;
+}
+
+.latte_content{
+    display: flex;
+    gap: 20px;
+}
+
+.tea_content{
+ display: flex;
+ gap: 20px;
+}
+
+.bread{
+ display: flex;
+ gap: 20px;
+}
+
+.value_combination{
+    display: flex;
+    gap: 20px;
+}

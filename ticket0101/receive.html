@@ -1,0 +1,260 @@
+<!--------------------------領取寄杯--------------------------
+----------------------顯示剩餘商品資訊、領取商品------------>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>領取寄杯</title>
+    <link rel="stylesheet" href="css/header.css">
+</head>
+
+<body>
+    <header>
+        <div class="btn_top_right">
+            <button id="btn_return">返回</button>
+        </div>
+        <div class="logo">
+            <img src="drinkLogo.jpg" alt="Drink Logo" />
+        </div>
+        <h1>領取寄杯</h1>
+    </header>
+    
+    <main>
+        <div class="container">
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>商品名稱</th>
+                        <th>size</th>
+                        <th>剩餘數量</th>
+                        <th>領取</th>
+                    </tr>
+                </thead>
+                <tbody id="productTable">
+                    <!-- 商品列表將動態生成 -->
+                </tbody>
+            </table>
+        </div>
+    </main> 
+</body>
+
+<script>
+    /**************獲取用戶擁有的商品**********************************/
+    fetchOwnedProducts()
+            async function getToken() {
+                const value = `; ${document.cookie}`;
+                const parts = value.split('; token=');
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+            async function fetchOwnedProducts() {
+                console.log("開始獲取用戶擁有的商品...");
+                const token = await getToken(); // 取得 token
+            if (!token) {
+                console.error("找不到 token，請重新登入。");
+                return;
+            }
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/api/OwnedProducts', {
+                        method: 'GET',
+                        credentials: 'include',
+                    });
+    
+                    console.log("API 回應狀態:", response.status);
+                    if (!response.ok) {
+                        const error = await response.json();
+                        console.error("無法獲取商品數據:", error);
+                        alert(error.error || "無法獲取商品數據，請稍後再試！");
+                        return;
+                    }
+    
+                    const data = await response.json();
+                    console.log("獲取的商品數據:", data);
+    
+                    if (data.owned_products) {
+                        renderProducts(data.owned_products);
+                    } else {
+                        alert("沒有商品數據可顯示");
+                    }
+                } catch (error) {
+                    console.error("獲取商品數據時發生錯誤:", error);
+                    alert("獲取商品數據失敗，請檢查網路連線！");
+                }
+            }
+    
+            // 渲染商品列表
+            function renderProducts(products) {
+                const tableBody = document.getElementById('productTable');
+                tableBody.innerHTML = ''; // 清空表格內容
+    
+                products.forEach((product, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.ch_name}</td>
+                        <td>${product.size}</td>
+                        <td>${product.quantity}</td>
+                        <td>
+                            <input type="number" id="quantity${index}" value="1" min="1" placeholder="輸入數量">
+                            <button onclick="fetchReceive(${index},${product.product_id},${product.item_id}, '${product.item_id}')">領取</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+    
+    
+    /*************領取商品功能*********************************************/
+    // 檢查使用者登入狀態
+
+            async function fetchReceive(index,product_id,item_id) {
+                inputField = document.getElementById(`quantity${index}`).value;
+                const token = await getToken(); // 取得 token
+                if (!token) {
+                    console.error("找不到 token，請重新登入。");
+                    return;
+                }
+    
+                try {
+                    // 向伺服器發送請求
+                    const response = await fetch('http://127.0.0.1:5000/api/receive', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        credentials: 'include',
+                        body: JSON.stringify({"product_id" : product_id,
+                            "item_id" : item_id,"inputField":inputField}),
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error(`錯誤: ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.message = "領取成功") {
+                        alert("領取成功");
+                        fetchOwnedProducts()
+                    }
+                    window.onload = fetchOwnedProducts;     
+                } catch (error) {
+                    console.error("發生錯誤:", error.message);
+                }
+            }
+    
+    /*
+            async function receiveCup(productId, chName) {
+                const response = await fetch(`http://127.0.0.1:5000/api/receive/${userId}`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ product_id: productId, item_id: 1 }),
+                });
+                
+    
+                    console.log("領取 API 回應狀態:", response.status);
+    
+                    if (!response.ok) {
+                        const error = await response.json();
+                        console.error("領取失敗:", error);
+                        alert(error.error || "領取失敗，請稍後再試！");
+                        return;
+                    }
+    
+                    const result = await response.json();
+                    console.log("領取成功:", result);
+                    alert(`領取成功！交易 ID：${result.transaction_id}`);
+                    fetchOwnedProducts(); // 更新商品列表
+        
+            }
+    
+            // 頁面加載完成後執行
+            window.onload = fetchOwnedProducts;
+        */
+            /**********************基本按鍵功能***********************/
+            document.getElementById('btn_return').addEventListener('click', () => {
+                window.location.href = 'index.html'; 
+            });
+</script>
+
+    <style>
+    
+            main {
+                margin-top: 100px; /* Avoid overlapping with fixed header */
+                padding: 2rem;
+            }
+    
+            .container {
+                max-width: 800px;
+                margin: auto;
+                background-color: #fff;
+                padding: 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+    
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+                border-radius: 6px;
+                overflow: hidden;
+            }
+    
+            table, th, td {
+                border: 1px solid #ddd;
+            }
+    
+            th {
+                background-color: #084f1c;
+                color: #ffff;
+                font-weight: bold;
+                padding: 10px;
+                text-align: center;
+            }
+    
+            td {
+                padding: 10px;
+                text-align: center;
+            }
+    </style>
+</html>
+
+    <!--測試數據
+    <script>
+        // 模擬商品數據
+        const mockProducts = [
+            { product_id: 1, name: "咖啡 A", remaining: 3 },
+            { product_id: 2, name: "紅茶 B", remaining: 1 },
+            { product_id: 3, name: "奶茶 C", remaining: 0 }
+        ];
+
+        // 渲染商品列表
+        function renderMockProducts(products) {
+            const tableBody = document.getElementById('productTable');
+            tableBody.innerHTML = ''; // 清空表格內容
+
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.remaining}</td>
+                    <td>
+                        <button ${product.remaining <= 0 ? 'disabled' : ''}>
+                            領取
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // 初始化模擬數據
+        renderMockProducts(mockProducts);
+    </script>
+    -->

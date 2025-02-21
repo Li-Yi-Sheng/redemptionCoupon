@@ -1,0 +1,70 @@
+/****************登入*********************************/
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.login_content {
+    position: relative;
+    max-width: 400px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 100px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.redister_content{
+    position: relative;
+    max-width: 400px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 100px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn_top_right {
+    position: absolute;
+    top: 30px;
+    right: 60px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #630909;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #870c0c;
+}

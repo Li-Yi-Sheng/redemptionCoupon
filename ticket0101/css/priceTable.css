@@ -1,0 +1,47 @@
+.cloum_image_block{
+    position: fixed;
+    padding-top:60px;
+    padding-left: 100px;
+}
+
+.cloum_text_block{
+    position: absolute;
+    top: 180px;
+    left: 42rem;
+}
+
+.cloum_price_block{
+    position: absolute;
+    top: 310px;
+    left: 42rem;
+}
+
+.btn_order{
+    position: absolute;
+    top: 500px;
+    left: 42rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px; /* 調整整個表格字體大小 */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 15px;
+}
+
+th {
+    background-color: #3a2020;
+    color: white;
+    font-size: 15px;
+}
+
+/*點選size變色*/
+.selected-row {
+    background-color: #a10b0b80;
+}

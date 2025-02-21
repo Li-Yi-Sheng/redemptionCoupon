@@ -1,0 +1,227 @@
+<!---------------測試-------------->
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品票券兌換系統</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="priceTable.css">
+    
+
+</head>
+
+<body>
+    <header>
+        <h1>濃縮咖啡飲料</h1>
+        <div class="btn_top_right"> <!--返回按鈕-->
+            <button id="btn_return">返回</button>
+        </div>
+        <div class="logo">   <!--Logo-->
+            <img src="drinkLogo.jpg" />
+        </div>
+    </header>
+
+        <main>
+            <!--圖片與與文字-->
+            <div class="esp_content">
+                <div class="Caffe_Americano"></div>
+                    <div class="cloum_image_block">
+                        <img src="濃縮咖啡飲料\Caffe Americano.jpg"  alt="Caffe Americano" width="350" height="350" />
+                     </div>
+                     <div class="cloum_text_block">
+                        <h1 class="title_cn"></h1>
+                        <h2 class="title_en"></h2>
+                    </div>
+
+                    <div class="cloum_price_block">
+                        <table>
+                            <thead><tr><!--從資料庫抓size--></tr></thead>
+                            <tbody><tr></tr><!--從資料庫抓price--></tr></tbody>
+                        </table>       
+                    </div>
+
+                        <div class="btn_order">
+                            <input type="hidden" id="product_id" value= value>
+                            <input type="number" id="quantity" value="1" min="1" placeholder="輸入數量">
+                            <button id="order">訂購</button>
+                        </div>
+            </div>   
+        </main>
+    </body>
+    
+    <script>/*******<script>動態加載商品資訊，對應後端api #商品資訊(不使用token))*************** */
+            
+        document.addEventListener("DOMContentLoaded", () => {
+            const productName = "Caffe Americano"; // 商品名稱應根據需求動態設置
+            fetchProductInfo(productName);
+        });
+        
+        async function fetchProductInfo(productName) {
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/api/product/${encodeURIComponent(productName)}`);
+                if (!response.ok) {
+                    throw new Error("無法獲取商品資料");
+                }
+        
+                const data = await response.json();
+        
+                if (data.message === "Product found" && data.product && Array.isArray(data.items)) {
+                    const product = data.product;
+                    const items = data.items;
+        
+                    // 更新商品名稱
+                    document.querySelector(".title_cn").textContent = product.ch_name || "未命名";
+                    document.querySelector(".title_en").textContent = product.name || "Unnamed";
+        
+                    // 動態生成表頭
+                    const tableHead = document.querySelector(".cloum_price_block table thead tr");
+                    tableHead.innerHTML = ""; // 清空表頭
+                    items.forEach(item => {
+                        const header = document.createElement("th");
+                        header.textContent = item.size || "未知尺寸";
+                        tableHead.appendChild(header);
+                    });
+        
+                    // 動態生成價目表
+                    const tableBody = document.querySelector(".cloum_price_block table tbody");
+                    tableBody.innerHTML = ""; // 清空表格
+                    const row = document.createElement("tr");
+                    items.forEach(item => {
+                        const cell = document.createElement("td");
+                        cell.textContent = `$${item.price || "0"}`;
+                        row.appendChild(cell);
+                    });
+                    tableBody.appendChild(row);
+                } else {
+                    console.error("未找到相應商品或無商品資料");
+                    const tableBody = document.querySelector(".cloum_price_block table tbody");
+                    tableBody.innerHTML = `<tr><td colspan="3">暫無資料</td></tr>`;
+                }
+            } catch (error) {
+                console.error("發生錯誤：", error);
+                alert(`載入商品資訊失敗：${error.message}`);
+            }
+        }
+        
+        // 返回按鈕事件
+        document.getElementById('btn_return').addEventListener('click', () => {
+            window.history.back();
+        });
+         
+    </script>
+    <script>/****************處理帶有 token 的 api 請求(封裝 fetchWithAuth 函數)***************************** */
+        
+        // 從 Cookie 獲取 Token
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+        
+        // 封裝 fetch 請求，包含 Authorization 頭
+        async function fetchWithAuth(url, options = {}) {
+            console.log("正在嘗試從 Cookie 獲取 Token...");
+        
+            const token = getCookie('token'); // 獲取 Token
+            if (!token) {
+                console.warn("未獲取到 Token，將跳轉到登入頁面！");
+                alert("未登入，請先登入！");
+                window.location.href = "login.html";
+                return null; // 返回 null，避免外層異常
+            }
+        
+            console.log("成功獲取 Token:", token);
+        
+            // 設置默認頭部
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // 添加 Authorization 頭
+                ...options.headers // 合併其他頭部信息
+            };
+        
+            // 合併請求選項
+            const fetchOptions = {
+                ...options,
+                headers,
+                credentials: 'include', // 確保包含憑證（Cookies）
+            };
+        
+            console.log("即將發送請求到 URL:", url);
+            console.log("請求選項:", fetchOptions);
+        
+            // 發送請求
+            try {
+                const response = await fetch(url, fetchOptions);
+                console.log("伺服器回應狀態碼:", response.status);
+            
+                // 處理未通過驗證的情況
+                if (response.status === 401) {
+                    console.warn("未通過驗證，跳轉到登入頁面！");
+                    alert("未登入或驗證失敗，請重新登入！");
+                    window.location.href = "login.html";
+                    return null; // 返回 null，避免外層異常
+                }
+            
+                console.log("伺服器回應成功，返回 response");
+                return response;
+            } catch (error) {
+                console.error("發送請求時發生錯誤:", error);
+                throw error; // 將錯誤拋出，以便外層處理
+            }
+        }
+    </script>
+    <script> /****************發送訂購請求***************/
+        document.getElementById('order').addEventListener('click', async () => {
+            /*
+            const productId = "2"; // 測試商品 ID
+            const quantity = 1;
+        
+            const orderData = {
+                product: productId,
+                quantity: quantity
+            };
+        
+            console.log("準備發送訂購請求，數據：", orderData);
+        */
+
+            // 假設商品 ID 是一個隱藏欄位，或者從 URL 中獲取
+        const productId = document.getElementById('product_id').value; // 商品 ID
+        const quantity = document.getElementById('quantity').value; // 從數量輸入框獲取
+
+        if (!productId || !quantity) {
+            alert("請選擇商品並輸入有效數量！");
+            return;
+        }
+
+        try {
+            const response = await fetchWithAuth(`http://127.0.0.1:5000/api/product/buy`, {
+                method: 'POST',
+                body: JSON.stringify({product_id: productId,quantity:quantity}),
+            });
+
+            if (!response) {
+                alert("訂購失敗，伺服器未響應！");
+                return;
+            }
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(`訂購失敗：${errorData.message || "未知錯誤"}`);
+                return;
+            }
+
+            const responseData = await response.json();
+            alert("訂購成功！");
+            console.log("伺服器回應：", responseData);
+        } catch (error) {
+            console.error("訂購請求出現錯誤：", error);
+            alert("訂購失敗，請稍後再試！");
+        }
+    }); 
+        
+    </script>
+
+</html>

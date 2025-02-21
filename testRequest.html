@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登入頁面</title>
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            const response = await fetch('http://127.0.0.1:5000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ username, password })
+            });
+        
+            const result = await response.json();
+            if (response.ok) {
+                alert('登入成功！');
+                document.getElementById('login-info').textContent = `登入成功:${result.message}`;
+            }
+        }        
+    </script>
+    <script>
+        async function tryy(event) {
+            event.preventDefault();
+
+            
+            const response = await fetch('http://127.0.0.1:5000/api/tryy', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                    credentials: 'include'
+            });
+        
+            const result = await response.json();
+            if (response.ok) {
+                alert('try成功！');
+                document.getElementById('login-info').textContent = `try成功：- ${result.user_id}`;
+
+            }
+        }        
+    </script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>登入</h2>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="username">帳號：</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密碼：</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">登入</button>
+        </form>
+        <form id="loginForm" onsubmit="tryy(event)">
+           
+            <button type="submit">登入</button>
+        </form>
+        <div id="login-info"></div>
+    </div>
+</body>
