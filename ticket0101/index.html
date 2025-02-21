@@ -1,0 +1,494 @@
+<!--主頁 mainPage-->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品票券兌換系統</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/mainPage_food.css">
+</head>
+
+<body>
+    <header>
+        <h1>商品兌換系統</h1>
+        <div class="btn_top_right">
+            <button id="btn_register">註冊</button>
+            <button id="btn_login">登入</button>
+            <button id="btn_receive" style="display: none;">領取寄杯</button>
+            <button id="btn_set" style="display: none;">會員設定</button>
+            <button id="btn_logout" style="display: none;">登出</button>
+        </div>
+        <div class="logo">
+            <img src="drinkLogo.jpg" />
+
+        </div>
+    </header>
+    
+    <main>
+        <div calss="food">
+            <hr/>
+            <!--飲品-->
+
+            <!--
+            <div class="drink">
+                <h1 class="drink">飲品</h1>
+                <button id="btn_esp">濃縮咖啡飲料</button>
+                <button id="btn_latte">拿鐵</button>
+                <button id="btn_tea">茶</button>
+              <button id="btn_others">其他飲料</button>
+            </div>
+            -->
+                
+                    <!----濃縮咖啡介紹內容----
+
+                    -------濃縮咖啡飲料(7項)-----------------------
+                        1 那堤 Caffè Latte 
+                        2 美式咖啡 Caffè Americano
+                        3 焦糖瑪奇朵 Caramel Macchiato
+                        4 濃縮咖啡 Espresso
+                        5 卡布奇諾 Cappuccino
+                        6 摩卡 Caffè Mocha
+                        7 可可瑪奇朵 Cocoa Macchiato 
+
+                    -------拿鐵(5項)-------------------------------
+                        8 經典紅茶那堤 Black Tea Latte
+                        9 醇濃抹茶那堤 Pure Matcha Latte
+                        10 伯爵茶那堤 Earl Grey Tea Latte
+                        11 玫瑰蜜香茶那堤 Rose Fancy Tea Latte
+                        12 冰經典紅茶那堤 Iced Black Tea Latte
+
+                    -------茶(4項)----------------------------------
+                        13 英式早餐紅茶 English Breakfast Tea
+                        14 蜜柚紅茶 Black Tea with Ruby Grapefruit and Honey
+                        15 阿里山烏龍茶 Alishan Oolong Tea
+                        16 冰搖檸檬紅茶 Iced Shaken Lemon Black Tea
+                    
+                    ------------------------------------------------->
+
+                <article>   <!--濃縮咖啡-->
+                    <div class="esp">   <!-- 濃縮飲料咖啡標題 -->
+                        <h1 class="esp_title">濃縮飲料咖啡</h1>
+                    </div>
+
+                    <div class="esp_content">
+                        
+                                <div class="Caffe_Latte">   <!--那堤 Caffè Latte-->
+
+                                    <div class="cloum_image_block">
+                                        <a href="food.html?value=1"> <!--跳到品項細則頁面-->
+                                            <img src="itemPicture/Caffe Latte.jpg"  alt="Caffe  " width="200" height="200" />
+                                        </a>
+                                     </div>
+                                    <div class="cloum_text_block">
+                                        <p class="title_cn">那堤</p>
+                                        <p class="title_en">Caffè Latte</p>
+                                    </div>
+                                </div>
+                                <div class="Caffe_Americano">   <!--美式咖啡 Caffè Americano-->
+
+                                    <div class="cloum_image_block">
+                                        <a href="food.html?value=2"> 
+                                            <img src="itemPicture/Caffe Americano.jpg" alt="Caffe Americano" width="200" height="200" />
+                                        </a>
+                                    </div>
+                                    <div class="cloum_text_block">
+                                        <p class="title_cn">美式咖啡</p>
+                                        <p class="title_en">Caffè Americano</p>
+                                    </div>
+                                </div>
+                                <div class="Caramel_Macchiato">     <!--焦糖瑪奇朵 Caramel Macchiato-->
+
+                                    <div class="cloum_image_block">
+                                        <a href="food.html?value=3">
+                                            <img src="itemPicture/Caramel Macchiato.jpg" alt="Caramel Macchiato" width="200" height="200" />
+                                        </a>
+                                    </div>
+                                    <div class="cloum_text_block">
+                                        <p class="title_cn">焦糖瑪奇朵</p>
+                                        <p class="title_en">Caramel Macchiato</p>
+                                    </div>
+                                </div>
+                                <div class="Espresso">     <!--濃縮咖啡 Espresso-->
+
+                                    <div class="cloum_image_block">
+                                        <a href="food.html?value=4">
+                                            <img src="itemPicture/Espresso.jpg" alt="Espresso" width="200" height="200" />
+                                        </a>
+                                    </div>
+                                    <div class="cloum_text_block">
+                                        <p class="title_cn">濃縮咖啡</p>
+                                        <p class="title_en">Espresso</p>
+                                    </div>
+                                </div>
+                                <div class="Cappuccino">     <!--卡布奇諾 Cappuccino-->
+
+                                    <div class="cloum_image_block">
+                                        <a href="food.html?value=5">
+                                            <img src="itemPicture/Cappuccino.jpg" alt="Cappuccino" width="200" height="200" />
+                                        </a>
+                                    </div>
+                                    <div class="cloum_text_block">
+                                        <p class="title_cn">卡布奇諾</p>
+                                        <p class="title_en">Cappuccino</p>
+                                    </div>
+                                </div>
+                                <div class="Caffe_Mocha">     <!--摩卡 Caffè Mocha-->
+
+                                    <div class="cloum_image_block">
+                                        <a href="food.html?value=6">
+                                            <img src="itemPicture/Caffe Mocha.jpg" alt="Caffe Mocha" width="200" height="200" />
+                                        </a>
+                                    </div>
+                                    <div class="cloum_text_block">
+                                        <p class="title_cn">摩卡</p>
+                                        <p class="title_en">Caffè Mocha</p>
+                                    </div>
+                                </div>
+                                <div class="Cocoa_Macchiato">     <!--可可瑪奇朵 Cocoa Macchiato-->
+
+                                    <div class="cloum_image_block">
+                                        <a href="food.html?value=7">
+                                            <img src="itemPicture/Cocoa Macchiato.jpg" alt="Cocoa Macchiato" width="200" height="200" />
+                                        </a>
+                                    </div>
+                                    <div class="cloum_text_block">
+                                        <p class="title_cn">可可瑪奇朵</p>
+                                        <p class="title_en">Cocoa Macchiato</p>
+                                    </div>
+                                </div>
+                    </div>
+                </article>
+            
+                <article>   <!-- 拿鐵(5項) -->
+                    <div class="latte">
+                        <h1 class="latte_title">拿鐵</h1>
+                    </div>
+
+                    <div class="latte_content">
+
+                        <div class="Black_Tea_Latte">     <!--經典紅茶那堤 Black Tea Latte-->
+
+                            <div class="cloum_image_block">
+                                <a href="food.html?value=8">
+                                    <img src="itemPicture/Black Tea Latte.jpg" alt="Black Tea Latte" width="200" height="200" />
+                                </a>
+                            </div>
+                            <div class="cloum_text_block">
+                                <p class="title_cn">經典紅茶那堤</p>
+                                <p class="title_en">Black Tea Latte</p>
+                            </div>
+                        </div>
+
+                        <div class="Pure_Matcha_Latte">     <!--醇濃抹茶那堤 Pure Matcha Latte-->
+
+                            <div class="cloum_image_block">
+                                <a href="food.html?value=9">
+                                    <img src="itemPicture/Pure Matcha Latte.jpg" alt="Pure Matcha Latte" width="200" height="200" />
+                                </a>
+                            </div>
+                            <div class="cloum_text_block">
+                                <p class="title_cn">醇濃抹茶那堤</p>
+                                <p class="title_en">Pure Matcha Latte</p>
+                            </div>
+                        </div>
+
+                        <div class="Earl_Grey_Tea_Latte">     <!--伯爵茶那堤 Earl Grey Tea Latte-->
+
+                            <div class="cloum_image_block">
+                                <a href="food.html?value=10">
+                                    <img src="itemPicture/Earl Grey Tea Latte.jpg" alt="Earl Grey Tea Latte" width="200" height="200" />
+                                </a>
+                            </div>
+                            <div class="cloum_text_block">
+                                <p class="title_cn">伯爵茶那堤</p>
+                                <p class="title_en">Earl Grey Tea Latte</p>
+                            </div>
+                        </div>
+
+                        <div class="Rose_Fancy_Tea_Latte">     <!--玫瑰蜜香茶那堤 Rose Fancy Tea Latte-->
+
+                            <div class="cloum_image_block">
+                                <a href="food.html?value=11">
+                                    <img src="itemPicture/Rose Fancy Tea Latte.jpg" alt="Rose Fancy Tea Latte" width="200" height="200" />
+                                </a>
+                            </div>
+                            <div class="cloum_text_block">
+                                <p class="title_cn">玫瑰蜜香茶那堤</p>
+                                <p class="title_en">Rose Fancy Tea Latte</p>
+                            </div>
+                        </div>
+
+                        <div class="Iced_Black_Tea_Latte">     <!--冰經典紅茶那堤 Iced Black Tea Latte-->
+
+                            <div class="cloum_image_block">
+                                <a href="food.html?value=12">
+                                    <img src="itemPicture/Iced Black Tea Latte.jpg" alt="Iced Black Tea Latte" width="200" height="200" />
+                                </a>
+                            </div>
+                            <div class="cloum_text_block">
+                                <p class="title_cn">冰經典紅茶那堤</p>
+                                <p class="title_en">Iced Black Tea Latte</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>  
+
+            <article>   <!--茶(4項)-->
+                <div class="tea">
+                    <h1 class="tea_title">茶</h1>
+                </div>
+                
+                    <div class="tea_content">
+                    
+                        <div class="English_Breakfast_Tea">   <!--英式早餐紅茶 English Breakfast Tea-->
+
+                            <div class="cloum_image_block">
+                                <a href="food.html?value=13">
+                                    <img src="itemPicture/English Breakfast Tea.jpg" alt="English Breakfast Tea" width="200" height="200" />
+                                </a>
+                            </div>
+                            <div class="cloum_text_block">
+                                <p class="title_cn">英式早餐紅茶</p>
+                                <p class="title_en">English Breakfast Tea</p>
+                            </div>
+                        </div>
+
+                        <div class="Black_Tea_with_Ruby_Grapefruit_and_Honey">   <!--蜜柚紅茶 Black Tea with Ruby Grapefruit and Honey-->
+
+                            <div class="cloum_image_block">
+                                <a href="food.html?value=14">
+                                    <img src="itemPicture/Black Tea with Ruby Grapefruit and Honey.jpg" alt="Black Tea with Ruby Grapefruit and Honey" width="200" height="200" />
+                                </a>
+                            </div>
+                            <div class="cloum_text_block">
+                                <p class="title_cn">蜜柚紅茶</p>
+                                <p class="title_en">Black Tea with Ruby Grapefruit and Honey</p>
+                            </div>
+                        </div>
+
+                        <div class="Alishan_Oolong_Tea">   <!--阿里山烏龍茶 Alishan Oolong Tea-->
+
+                            <div class="cloum_image_block">
+                                <a href="food.html?value=15">
+                                    <img src="itemPicture/Alishan Oolong Tea.jpg" alt="Alishan Oolong Tea" width="200" height="200" />
+                                </a>
+                            </div>
+                            <div class="cloum_text_block">
+                                <p class="title_cn">阿里山烏龍茶</p>
+                                <p class="title_en">Alishan Oolong Tea</p>
+                            </div>
+                        </div>
+
+                        <div class="Iced_Shaken_Lemon_Black_Tea">   <!--冰搖檸檬紅茶 Iced Shaken Lemon Black Tea-->
+
+                            <div class="cloum_image_block">
+                                <a href="food.html?value=16">
+                                    <img src="itemPicture/Iced Shaken Lemon Black Tea.jpg" alt="Iced Shaken Lemon Black Tea" width="200" height="200" />
+                                </a>
+                            </div>
+                            <div class="cloum_text_block">
+                                <p class="title_cn">冰搖檸檬紅茶</p>
+                                <p class="title_en">Iced Shaken Lemon Black Tea</p>
+                            </div>
+                        </div>
+                    </div>
+            </article>
+
+            <hr/>
+
+            <!----麵包介紹內容----
+
+                菇菇濃湯法烤麵包 Mushroom Soup Flavored Bread
+                草莓起司麵包 Strawberry Cheese Bread
+                巧克力雙色吐司 Chocolate Toast
+                明太子起司貝果 Mentaiko Cheese Bagel
+                培根起司軟歐麵包 Bacon & cheese bread
+                藍莓果粒貝果 Blueberry Bagel
+                肉桂捲 Cinnamon Roll
+                蜂蜜牛奶麵包 Honey & Milk Bread
+                軟法麵包 Cheesy Bread
+                雙起司軟歐麵包 Double Cheese Bread
+
+            --------------------------------------------------------->
+
+
+
+            <article>   <!--麵包(10項)-->
+                <h1 class="bread_title">麵包</h1>
+                <div class="bread">    
+                    <!--<button id="btn_bread">麵包</button>-->
+                    <div class="Mushroom_Soup_Flavored_Bread">     <!--菇菇濃湯法烤麵包 Mushroom Soup Flavored Bread-->
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=17">
+                                <img src="itemPicture/Mushroom Soup Flavored Bread.jpg" alt="Mushroom Soup Flavored Bread" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">菇菇濃湯法烤麵包</p>
+                            <p class="title_en">Mushroom Soup Flavored Bread</p>
+                        </div>
+                    </div>
+
+                    
+                    <div class="Strawberry_Cheese_Bread">   <!--草莓起司麵包 Strawberry Cheese Bread-->
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=18">
+                                <img src="itemPicture/Strawberry Cheese Bread.jpg" alt="Strawberry Cheese Bread" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">草莓起司麵包</p>
+                            <p class="title_en">Strawberry Cheese Bread</p>
+                        </div>
+                    </div>
+
+                    <div class="Chocolate_Toast">   <!--巧克力雙色吐司 Chocolate Toast-->   
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=19">
+                                <img src="itemPicture/Chocolate Toast.jpg" alt="Chocolate Toast" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">巧克力雙色吐司</p>
+                            <p class="title_en">Chocolate Toast</p>
+                        </div>
+                    </div>
+
+                    <div class="Mentaiko_Cheese_Bagel">     <!--明太子起司貝果 Mentaiko Cheese Bagel-->
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=20">
+                                <img src="itemPicture/Mentaiko Cheese Bagel.jpg" alt="Mentaiko Cheese Bagel" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">明太子起司貝果</p>
+                            <p class="title_en">Mentaiko Cheese Bagel</p>
+                        </div>
+                    </div>
+                    
+                    <div class="Bacon_and_cheese_bread">    <!--培根起司軟歐麵包 Bacon & cheese bread-->
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=21">
+                                <img src="itemPicture/Bacon & cheese bread.jpg" alt="Bacon_and_cheese bread" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">培根起司軟歐麵包</p>
+                            <p class="title_en">Bacon & cheese bread</p>
+                        </div>
+                    </div>
+                    
+                    <div class="Blueberry_Bagel">   <!--藍莓果粒貝果 Blueberry Bagel-->
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=22">
+                                <img src="itemPicture/Blueberry Bagel.jpg" alt="Blueberry Bagel" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">藍莓果粒貝果</p>
+                            <p class="title_en">Blueberry Bagel</p>
+                        </div>
+                    </div>
+                    
+                    <div class="Cinnamon_Roll">   <!--肉桂捲 Cinnamon Roll-->
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=23">
+                                <img src="itemPicture/Cinnamon Roll.jpg" alt="Cinnamon Roll" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">肉桂捲</p>
+                            <p class="title_en">Cinnamon Roll</p>
+                        </div>
+                    </div>
+                    
+                    <div class="Honey_and_Milk_Bread">   <!--蜂蜜牛奶麵包 Honey & Milk Bread-->
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=24">
+                                <img src="itemPicture/Honey & Milk Bread.jpg" alt="Honey & Milk Bread" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">蜂蜜牛奶麵包</p>
+                            <p class="title_en">Honey & Milk Bread</p>
+                        </div>
+                    </div>
+                    
+                    <div class="Cheesy_Bread">   <!--軟法麵包 Cheesy Bread-->   
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=25">
+                                <img src="itemPicture/Cheesy Bread.jpg" alt="Cheesy Bread" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">軟法麵包</p>
+                            <p class="title_en">Cheesy Bread</p>
+                        </div>
+                    </div>
+                    
+                    <div class="Double_Cheese_Bread">   <!--雙起司軟歐麵包 Double Cheese Bread-->   
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=26">
+                                <img src="itemPicture/Double Cheese Bread.jpg" alt="Double Cheese Bread" width="200" height="200" />
+                            </a>
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">雙起司軟歐麵包</p>
+                            <p class="title_en">Double Cheese Bread</p>
+                        </div>
+                    </div>
+                
+                </div>
+            
+            </article>
+            <hr/>
+            
+            <article>   <!--超值組合-->
+                <h1 class="value_combination">超值組合</h1>
+                <div class="value_combination">
+                    <div class="Latte_Lover_Bundle ">     <!--拿鐵愛好者套卷  Latte Lover Bundle -->
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=27">
+                                <img src="itemPicture/Latte Lover Bundle.jpg" alt="Latte Lover Bundle" width="200" height="200" />
+                            </a>
+                            
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">拿鐵愛好者套卷 </p>
+                            <p class="title_en">Latte Lover Bundle</p>
+                        </div>
+                    </div>
+
+                    <div class="Morning_Essentials_Bundle">     <!--1. 早晨必備套卷 Morning Essentials Bundle-->
+
+                        <div class="cloum_image_block">
+                            <a href="food.html?value=28">
+                                <img src="itemPicture/Morning Essentials Bundle.jpg" alt="Morning Essentials Bundle" width="200" height="200" />
+                            </a>
+                            
+                        </div>
+                        <div class="cloum_text_block">
+                            <p class="title_cn">早晨必備套卷</p>
+                            <p class="title_en">Morning Essentials Bundle</p>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+    </main>
+</body>
+<script src="javascript/mainPage.js"></script>
+</html>

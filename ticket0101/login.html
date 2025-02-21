@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品兌換系統-會員登入</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+    <header>
+        <h1>商品兌換系統-會員登入</h1>
+        <div class="btn_top_right"> <!--返回按鈕-->
+            <button id="btn_return">返回</button>
+        </div>
+        <div class="logo">   <!--Logo-->
+            <img src="drinkLogo.jpg" />
+        </div>
+    </header>
+
+    <!--會員登入-->
+    <div class="login_content">
+        <h1>商品兌換系統-會員登入</h1>
+        <form id="login_form">
+            <label for="email">帳號:</label>
+            <input type="email" id="email" required>
+            <label for="password">密碼:</label>
+            <input type="password" id="password" required>
+            <button type="submit">登入</button>
+        </form>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/node-forge@0.10.0/dist/forge.min.js"></script>
+<script src="javascript/login.js"></script>
+</html>

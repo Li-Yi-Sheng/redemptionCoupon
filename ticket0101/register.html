@@ -1,0 +1,57 @@
+<!----------------註冊頁面-------------------->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品兌換系統-會員註冊</title>
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/set.css">
+</head>
+
+<body>
+    <header>
+        <h1>商品兌換系統-會員註冊</h1>
+        <div class="btn_top_right">
+            <button id="btn_return">返回</button>
+        </div>
+        <div class="logo">
+            <img src="drinkLogo.jpg" />
+        </div>
+    </header>
+    <main>
+        <h3>註冊基本資料</h3>
+        <div class="container">
+            <div class="form_group">
+                <label for="email">電子郵件</label>
+                <input type="email" id="email" required>
+            </div>
+
+            <div class="form_group">
+                <label for="password">密碼</label>
+                <input type="password" id="password" required>
+            </div>
+
+            <div class="form_group">
+                <label for="gender">性別</label>
+                <select id="gender" required>
+                    <option value="">請選擇</option>
+                    <option value="male">男性</option>
+                    <option value="female">女性</option>
+                </select>
+            </div>
+
+            <div class="form_group">
+                <label for="number">手機門號</label>
+                <input type="tel" id="number" required>
+            </div>
+
+            <button class="btn_register" id="registerBtn">註冊</button>
+        </div>
+        <div id="regisert-info"></div>
+    </main>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/node-forge@0.10.0/dist/forge.min.js"></script>
+<script src="javascript/register.js"></script>
+
+</html>

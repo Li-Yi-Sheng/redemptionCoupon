@@ -1,0 +1,313 @@
+<!--------------------查詢交易紀錄---------------->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交易紀錄</title>
+    <link rel="stylesheet" href="css/header.css">
+</head>
+
+<body>
+    <header>
+        <div class="btn_top_right">
+            <button id="btn_return">返回</button>
+            
+        </div>
+        <div class="logo">
+            <img src="drinkLogo.jpg" alt="Drink Logo" />
+        </div>
+        <h1>交易紀錄</h1>
+
+        <div class="form_group">
+            <label for="Ttype">查詢條件類型</label>
+            <select id="Ttype">
+                <option value="add">購買</option>
+                <option value="reduce">領取</option>
+            </select>
+        </div>
+
+        <div class="form_group">
+            <label for="Ptype">商品類型條件</label>
+            <select id="Ptype">
+                <option value="bundle">組合</option>
+                <option value="coffee">咖啡</option>
+                <option value="tea">茶</option>
+                <option value="latte">拿鐵</option>
+                <option value="food">麵包</option>
+            </select>
+        </div>
+        <div class="form_group">
+            <label for="order">按日期排序</label>
+            <select id="order">
+                <option value="t.date">日期</option>
+                <option value="quantity">數量</option>
+            </select>
+        </div><div class="form_group">
+
+            <button class="btn_confirm">確定</button>
+        </div>
+                <!-- 
+                    //transaction_type=none,add,reduce
+                    //product_type=bundle,coffee,tea,latte,food
+                    //order by=t.date,或 other(其他)
+                    //order_direction=desc(由大到小),asc(由大到小)          -->
+                
+<style>
+
+
+header .form_group {
+    margin-top: 40px;
+    display: flex; 
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px; 
+    background-color: rgba(158, 181, 149, 0.651);
+    padding: 15px;
+    border-radius: 5px;
+    width: 100px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 陰影效果 */
+}
+
+/* 標籤樣式 */
+header .form_group label {
+    font-size: 14px;
+    color: #000000; 
+}
+
+/* 下拉選單樣式 */
+header .form_group select {
+    width: 100%; 
+    padding: 5px;
+    border: 1px solid #ccc; 
+    border-radius: 3px; 
+    background-color: #ffffff; 
+    font-size: 14px; 
+    color: #000000; 
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); 
+    appearance: none; /* 隱藏系統樣式（跨瀏覽器） */
+}
+
+/* 鼠標懸停效果 */
+header .form_group select:hover {
+    background-color: #f1f1f1; 
+    border-color: #aaa; 
+}
+
+/* 選中樣式 */
+header .form_group select:focus {
+    outline: none; /* 移除默認焦點樣式 */
+    border-color: #ff00004d; /* 邊框高亮 */
+    box-shadow: 0 0 3px rgba(255, 0, 0, 0.5); /* 焦點陰影效果 */
+}
+  
+</style>
+    </header>
+    
+    <main>
+        <div class="container">
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>交易類型</th>
+                        <th>交易時間</th>
+                        <th>商品名稱</th>
+                        <th>商品類型</th>
+                        <th>交易數量</th>
+                        <th>商品明細</th>
+                    </tr>
+                </thead>
+                <tbody id="productTable">
+                    <!-- 商品列表將動態生成 -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+
+<script>
+
+     function renderProducts(products) {
+        const tableBody = document.getElementById('productTable');
+        tableBody.innerHTML = ''; // 清空表格內容
+
+        products.forEach((product, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${product.ch_name}</td>
+                <td>${product.quantity}</td>
+                <td>
+                    <input type="number" id="quantity${index}" value="1" min="1" placeholder="輸入數量">
+                    <button onclick="fetchReceive(${index},${product.product_id},${product.product_id}, '${product.item_id}')">領取</button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+/***************************交易明細表格**************************************/
+function renderProducts(transaction) {
+    const tableBody = document.getElementById('productTable');
+    tableBody.innerHTML = ''; // 清空表格內容
+
+    transaction.forEach((transaction, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${transaction.transaction_type}</td>
+            <td>${transaction.transaction_date}</td>
+            <td>${transaction.product_name}</td>
+            <td>${transaction.product_type}</td>
+            <td>${transaction.quantity}</td>
+            <td>${transaction.item_details}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+    /**************交易紀錄**********************************/
+            fetchTransactions()
+            async function getToken() {
+                const value = `; ${document.cookie}`;
+                const parts = value.split('; token=');
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+            async function fetchTransactions() {
+                console.log("交易紀錄開始...");
+                const token = await getToken();
+                if (!token) {
+                    console.error("找不到 token，請重新登入。");
+                    return;
+                }
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/api/transactions', {
+                        method: 'POST',
+                        credentials: 'include',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({
+                        "transaction_type":"add",
+                        "product_type": "bundle",
+                        "order_by": "t.date;",
+                        }),
+                    });
+                    console.log("API 回應狀態:", response.status);
+                    if (!response.ok) {
+                        const error = await response.json();
+                        console.error("無法取得交易紀錄:", error);
+                        alert(error.error || "無法取得交易紀錄，請稍後再試！");
+                        return;
+                    }
+    
+                    const data = await response.json();
+                    console.log("交易紀錄數據:", data);
+    
+                    if (data) {
+                        renderProducts(data);
+                    } else {
+                        alert("沒有交易紀錄可顯示");
+                    }
+                } catch (error) {
+                    console.error("獲取交易紀錄時發生錯誤:", error);
+                    alert("獲取交易紀錄失敗，請檢查網路連線！");
+                }
+            }
+    
+
+ /**********************篩選***********************/
+ document.querySelector(".btn_confirm").addEventListener("click", async () => {
+    const token = await getToken();
+    if (!token) {
+        alert("未登入，請先登入！");
+        window.location.href = "login.html";
+        return;
+    }
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/transactions', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                "transaction_type": document.getElementById('Ttype').value,
+                "product_type": document.getElementById('Ptype').value,
+                "order_by": document.getElementById('order').value,
+            }),
+        });
+        console.log("API 回應狀態:", response.status);
+        if (!response.ok) {
+            const error = await response.json();
+            console.error("無法取得交易紀錄:", error);
+            alert(error.error || "無法取得交易紀錄，請稍後再試！");
+            return;
+        }
+
+        const data = await response.json();
+        console.log("交易紀錄數據:", data);
+
+        if (data) {
+            renderProducts(data);
+        } else {
+            alert("沒有交易紀錄可顯示");
+        }
+    } catch (error) {
+        console.error("刪除帳號時發生錯誤:", error);
+        alert("無法連接到伺服器，請稍後再試！");
+    }
+    }
+);
+
+            /**********************基本按鍵功能***********************/
+            document.getElementById('btn_return').addEventListener('click', () => {
+                window.location.href = 'index.html'; 
+            });
+</script>
+
+<style>
+
+        main {
+            margin-top: 100px; /* Avoid overlapping with fixed header */
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #084f1c;
+            color: #ffff;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+        }
+
+        td {
+            padding: 10px;
+            text-align: center;
+        }
+       
+        
+</style>
+
+</html>

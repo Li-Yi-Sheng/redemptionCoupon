@@ -1,0 +1,53 @@
+/***********************頁面最上方的大標題畫面排版************************************/
+body {
+    padding: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+header {
+    position: fixed; 
+    top: 0;          
+    left: 0;         
+    width: 100%;    
+    background-color: #a20e0e;
+    color: white;
+    height: 80px;
+    padding: 1rem;
+    text-align: center;
+    z-index: 1000;   
+}
+.btn_top_right {
+    position: absolute;
+    top: 30px;
+    right: 60px;
+    display: flex;
+    gap: 10px;
+}
+button {
+    padding: 10px 20px;
+    background-color: #630909;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #870c0c; /*鼠標移到按鈕位置的顏色(未按下)*/
+}
+main {
+    margin-top: 80px;
+    padding: 2rem;
+}
+.content {  /*內文*/
+    height: 1000px; 
+    background-color: #f4f4f4;
+}
+.logo{  /*logo放在左上角*/
+    position: absolute;
+    top: 10px;
+    left: 15px;
+}
+.logo img {
+    width: 90px;
+    height: 90px;
+}

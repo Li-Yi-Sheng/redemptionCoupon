@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品票券兌換系統</title>
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="css/priceTable.css">
+</head>
+<body>
+    <header>
+        <h1>超值組合</h1>
+        <div class="btn_top_right">
+            <button id="btn_return">返回</button>
+        </div>
+        <div class="logo">
+            <img src="drinkLogo.jpg" />
+        </div>
+    </header>
+    <main>
+        <!-- 圖片與文字 -->
+        <div class="value_combination_content">
+            <div class="Latte_Lover_Bundle"></div>
+            <div class="cloum_image_block">
+                <img id="dynamicImage" alt="Latte Lover Bundle" width="350" height="350" />
+            </div>
+            <div class="cloum_text_block">
+                <h1 class="title_cn"></h1>
+                <h2 class="title_en"></h2>
+            </div>
+            <div class="cloum_price_block">
+                <table>
+                    <thead><tr></tr></thead>
+                    <tbody></tbody>
+                </table>       
+            </div>
+            <div class="btn_order">
+                <input type="hidden" id="product_id" value="">
+                <input type="hidden" id="selected_item_id" value=""> <!-- 新增隱藏欄位存儲選中的 item_id -->
+                <input type="number" id="quantity" value="1" min="1" placeholder="輸入數量">
+                <button id="order">訂購</button>
+            </div>
+        </div>   
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const value = params.get('value');
+            fetchProductInfo(value);
+        });
+        
+        async function getToken() {
+            const value = `; ${document.cookie}`;
+            const parts = value.split('; token=');
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+        async function fetchProductInfo(product_id) {
+            
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/api/product/${product_id}`);
+                if (!response.ok) {
+                    throw new Error("無法獲取商品資料");
+                }
+                const data = await response.json();
+
+                const img = document.getElementById('dynamicImage');
+                img.src = `itemPicture/${data.product.name}.jpg`;
+                
+                if (data.message === "Product found" && data.product && Array.isArray(data.items)) {
+                    const product = data.product;
+                    const items = data.items;
+
+                    // 更新商品名稱
+                    document.querySelector(".title_cn").textContent = product.ch_name || "未命名";
+                    document.querySelector(".title_en").textContent = product.name || "Unnamed";
+
+                    // 動態生成表頭
+                    const tableHead = document.querySelector(".cloum_price_block table thead tr");
+                    tableHead.innerHTML = "<th>尺寸</th><th>價格</th>"; // 固定兩列：尺寸和價格
+
+                    // 動態生成價目表
+                    const tableBody = document.querySelector(".cloum_price_block table tbody");
+                    tableBody.innerHTML = "";
+                    items.forEach(item => {
+                        const row = document.createElement("tr");
+                        row.dataset.itemId = item.item_id; // 存儲 item_id
+
+                        const sizeCell = document.createElement("td");
+                        sizeCell.textContent = item.size || "未知尺寸";
+                        row.appendChild(sizeCell);
+
+                        const priceCell = document.createElement("td");
+                        priceCell.textContent = `$${item.price || "0"}`;
+                        row.appendChild(priceCell);
+
+                        // 添加點擊事件
+                        row.addEventListener("click", () => handleRowClick(row));
+
+                        tableBody.appendChild(row);
+                    });
+                }else if(data.message === "Product found" && data.product && Array.isArray(data.bundle_items)){
+                    const product = data.product;
+                    const items = data.bundle_items;
+        
+                    //更新商品名稱
+                    document.querySelector(".title_cn").textContent = product.ch_name || "未命名";
+                    document.querySelector(".title_en").textContent = product.name || "Unnamed";
+                    const headers = ["商品內容", "商品數量","size", "價格"];
+                    //製造欄位
+                    const tableHead = document.querySelector(".cloum_price_block table thead tr");
+                    tableHead.innerHTML = ""; 
+                    headers.forEach(headerText  => {
+                        const header = document.createElement("th");
+                        header.textContent = headerText ;
+                        tableHead.appendChild(header);
+                    });
+        
+                    //製造價目表
+                    const tableBody = document.querySelector(".cloum_price_block table tbody");
+                    tableBody.innerHTML = ""; 
+                    const row = document.createElement("tr");
+                    items.forEach(item => {
+                        const row = document.createElement("tr");
+
+                        // 建立每個欄位的儲存格
+                        const nameCell = document.createElement("td");
+                        nameCell.textContent = item.ch_name || "無名稱";
+                        row.appendChild(nameCell);
+
+                        const quantityCell = document.createElement("td");
+                        quantityCell.textContent = item.quantity || "0";
+                        row.appendChild(quantityCell);
+
+                        const sizeCell = document.createElement("td");
+                        sizeCell.textContent = item.size || "N/A";
+                        row.appendChild(sizeCell);
+
+                        const priceCell = document.createElement("td");
+                        priceCell.textContent = item.price || "0";
+                        row.appendChild(priceCell); 
+                        tableBody.appendChild(row);
+                    });
+                   
+                } else {
+                    console.error("未找到相應商品或無商品資料");
+                    const tableBody = document.querySelector(".cloum_price_block table tbody");
+                    tableBody.innerHTML = `<tr><td colspan="3">暫無資料</td></tr>`;
+                }
+            } catch (error) {
+                console.error("發生錯誤：", error);
+                alert(`載入商品資訊失敗：${error.message}`);
+            }
+        }
+        
+        // 處理表格行點擊事件
+        function handleRowClick(selectedRow) {
+            // 移除其他行的選中效果
+            const rows = document.querySelectorAll(".cloum_price_block table tbody tr");
+            rows.forEach(row => row.classList.remove("selected-row"));
+
+            // 為當前選中的行添加效果
+            selectedRow.classList.add("selected-row");
+
+            // 更新隱藏的 item_id 欄位
+            const itemId = selectedRow.dataset.itemId;
+            document.getElementById("selected_item_id").value = itemId;
+
+            console.log("選中的 item_id:", itemId);
+        }
+
+        // 返回按鈕事件
+        document.getElementById('btn_return').addEventListener('click', () => {
+            window.history.back();
+        });
+
+        // 訂購按鈕事件
+        document.getElementById('order').addEventListener('click', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('value');
+            const itemId = document.getElementById('selected_item_id').value;
+            const quantity = document.getElementById('quantity').value;
+            const token = await getToken();
+            alert(token);
+            if (!token) {
+                alert("未登入，請先登入！");
+                //window.location.href = "login.html";
+                return;
+            }
+            if (!productId || !quantity) {
+                alert("請選擇商品並輸入有效數量！");
+                return;
+            }
+
+            try {
+                const response = await fetchWithAuth(`http://127.0.0.1:5000/api/product/buy`, {
+                    method: 'POST',
+                    body: JSON.stringify({ product_id: productId, item_id: itemId, quantity }),
+                    credentials: 'include',
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(`訂購失敗：${errorData.message || "未知錯誤"}`);
+                    return;
+                }
+
+                const responseData = await response.json();
+                alert("訂購成功！");
+                console.log("伺服器回應：", responseData);
+            } catch (error) {
+                console.error("訂購請求出現錯誤：", error);
+                alert("訂購失敗，請稍後再試！");
+            }
+        });
+
+        // 封裝帶有驗證的 API 請求
+        async function fetchWithAuth(url, options = {}) {
+            const token = getCookie('token');
+            if (!token) {
+                alert("未登入，請先登入！");
+                window.location.href = "login.html";
+                return null;
+            }
+
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                ...options.headers
+            };
+
+            return await fetch(url, { ...options, headers });
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return null;
+        }
+    </script>
+</body>
+</html>
